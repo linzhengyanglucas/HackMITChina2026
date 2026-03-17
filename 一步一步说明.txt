@@ -1,0 +1,16 @@
+第1步：把你原来的 .env 文件复制到这个文件夹里。
+
+第2步：打开终端，进入这个文件夹。
+命令：cd ~/Downloads/shiyi
+
+第3步：安装依赖。
+命令：npm install
+
+第4步：启动程序。
+命令：npm start
+
+第5步：看到 Server running at http://localhost:3001 以后，不要关掉终端。
+
+第6步：打开浏览器，访问：http://localhost:3001
+
+第7步：开始填写页面，然后点"生成今晚推荐"。

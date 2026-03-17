@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>食宜 ShiYi · TCM Meal Advisor</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="logo"><span>食宜</span><span class="logo-sub">ShiYi</span></div>
+  <div class="topbar-right">
+    <button class="icon-btn" onclick="showScreen('historyScreen')" title="历史菜单">📋</button>
+    <button class="lang-toggle" onclick="toggleLang()" id="t-langBtn">EN</button>
+    <button class="icon-btn" onclick="openSettings()" title="设置">⚙</button>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- 档案 -->
+  <div id="profileScreen" class="screen active">
+    <div class="section-header">
+      <h1 id="t-profile-title">建立你的档案</h1>
+      <p id="t-profile-sub">只需填写一次，之后每天自动调用</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>👤</span><span id="t-identity-label">你的名字和头像</span></div>
+      <div class="identity-row">
+        <div class="avatar-upload" onclick="document.getElementById('avatarInput').click()">
+          <img id="avatarPreview" src="" alt="" style="display:none">
+          <div id="avatarPlaceholder" class="avatar-placeholder">＋</div>
+          <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatar(this)" style="display:none">
+        </div>
+        <div class="identity-right">
+          <input type="text" class="form-input" id="userName" placeholder="起个名字吧…" maxlength="20">
+          <p class="field-hint" id="t-name-hint">会显示在每日推荐上</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🏮</span><span id="t-constitution-label">选择你的中医体质</span></div>
+      <div class="constitution-grid">
+        <div class="constitution-card" data-val="balanced"     onclick="selectConstitution(this)"><div class="icon">☯️</div><div class="zh">平和质</div><div class="en">Balanced</div></div>
+        <div class="constitution-card" data-val="qi-def"       onclick="selectConstitution(this)"><div class="icon">🌿</div><div class="zh">气虚质</div><div class="en">Qi Deficient</div></div>
+        <div class="constitution-card" data-val="yang-def"     onclick="selectConstitution(this)"><div class="icon">🔥</div><div class="zh">阳虚质</div><div class="en">Yang Deficient</div></div>
+        <div class="constitution-card" data-val="yin-def"      onclick="selectConstitution(this)"><div class="icon">💧</div><div class="zh">阴虚质</div><div class="en">Yin Deficient</div></div>
+        <div class="constitution-card" data-val="phlegm"       onclick="selectConstitution(this)"><div class="icon">☁️</div><div class="zh">痰湿质</div><div class="en">Phlegm-Damp</div></div>
+        <div class="constitution-card" data-val="damp-heat"    onclick="selectConstitution(this)"><div class="icon">🌡️</div><div class="zh">湿热质</div><div class="en">Damp-Heat</div></div>
+        <div class="constitution-card" data-val="blood-stasis" onclick="selectConstitution(this)"><div class="icon">🌸</div><div class="zh">血瘀质</div><div class="en">Blood Stasis</div></div>
+        <div class="constitution-card" data-val="qi-stag"      onclick="selectConstitution(this)"><div class="icon">🍃</div><div class="zh">气郁质</div><div class="en">Qi Stagnation</div></div>
+        <div class="constitution-card" data-val="special"      onclick="selectConstitution(this)"><div class="icon">⭐</div><div class="zh">特禀质</div><div class="en">Sensitive</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🥩</span><span id="t-protein-label">喜欢的蛋白质（可多选）</span></div>
+      <div class="checklist" id="proteinChecks">
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>鸡肉</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>猪肉</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>牛肉</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>羊肉</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>鱼类</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>豆腐/蛋</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>海鲜虾蟹</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>鸭肉</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🚫</span><span id="t-restrict-label">不吃的东西（可多选）</span></div>
+      <div class="checklist" id="restrictChecks">
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>不吃辣</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>不吃生食</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>不吃重油</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>不吃海鲜</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>不吃内脏</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>不吃羊肉</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>素食</label>
+        <label class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>过敏(乳)</label>
+      </div>
+      <div class="form-group" style="margin-top:12px;margin-bottom:0">
+        <input type="text" class="form-input" id="customRestrict" placeholder="其他忌口（自由填写）">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>⏱</span><span id="t-time-label">做饭时间</span></div>
+      <div class="time-slider-wrap">
+        <input type="range" id="timeSlider" min="0" max="3" step="1" value="1" oninput="updateTimeSlider(this)">
+        <div class="time-ticks">
+          <span>15分钟</span><span>30分钟</span><span>1小时</span><span>外卖</span>
+        </div>
+      </div>
+      <div class="time-display" id="timeDisplay">30分钟</div>
+    </div>
+
+    <div id="profileError" class="error-msg">请先选择体质</div>
+    <button class="btn btn-primary" onclick="saveProfile()" id="t-save-profile">保存档案，开始今日推荐 →</button>
+  </div>
+
+  <!-- 今日状态 -->
+  <div id="checkinScreen" class="screen">
+    <div class="section-header">
+      <h1 id="t-checkin-title">今日状态</h1>
+      <p id="t-checkin-sub">今天胃口怎么样？</p>
+    </div>
+
+    <div class="profile-badge">
+      <div class="avatar-sm" id="badgeAvatar">🏮</div>
+      <div class="info">
+        <div class="constitution-name" id="badgeName">-</div>
+        <div class="edit-link" onclick="showScreen('profileScreen')" id="t-edit-profile">修改档案</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🍽</span><span id="t-appetite-label">今日胃口</span></div>
+      <div class="emoji-slider-wrap">
+        <div class="emoji-track" id="emojiTrack">
+          <span class="emoji-opt" data-val="1" onclick="selectEmoji(this)">😞</span>
+          <span class="emoji-opt" data-val="2" onclick="selectEmoji(this)">😐</span>
+          <span class="emoji-opt" data-val="3" onclick="selectEmoji(this)">🙂</span>
+          <span class="emoji-opt" data-val="4" onclick="selectEmoji(this)">😊</span>
+          <span class="emoji-opt" data-val="5" onclick="selectEmoji(this)">😋</span>
+        </div>
+        <div class="emoji-label" id="emojiLabel">点击选择今日胃口</div>
+      </div>
+    </div>
+
+    <div id="checkinError" class="error-msg">请先选择胃口</div>
+    <button class="btn btn-primary" onclick="generateRecommendation()" id="t-generate-btn">✦ 生成今晚推荐</button>
+  </div>
+
+  <!-- 生成中 -->
+  <div id="loadingScreen" class="screen">
+    <div class="spinner"></div>
+    <div class="loading-text" id="t-loading-text">正在为你生成专属菜单…</div>
+    <div class="loading-sub"  id="t-loading-sub">结合体质 · 节气 · 今日状态综合分析</div>
+  </div>
+
+  <!-- 结果 -->
+  <div id="resultScreen" class="screen">
+    <div class="section-header">
+      <h1 id="t-result-title">今晚推荐</h1>
+      <p id="t-result-sub"></p>
+    </div>
+    <div id="resultContent"></div>
+    <div class="action-row">
+      <button class="btn btn-jade"      onclick="copyResult()"                id="t-copy-btn">📋 复制菜单</button>
+      <button class="btn btn-secondary" onclick="showScreen('checkinScreen')" id="t-back-btn">← 重新生成</button>
+    </div>
+  </div>
+
+  <!-- 历史菜单 -->
+  <div id="historyScreen" class="screen">
+    <div class="section-header">
+      <h1 id="t-history-title">历史菜单</h1>
+      <p id="t-history-sub">点击 ♡ 收藏喜欢的菜单</p>
+    </div>
+    <div class="history-tabs">
+      <button class="history-tab active" onclick="switchHistoryTab(this,'all')" id="t-tab-all">全部</button>
+      <button class="history-tab"        onclick="switchHistoryTab(this,'fav')" id="t-tab-fav">已收藏 ♡</button>
+    </div>
+    <div id="historyList"></div>
+    <div id="historyEmpty" class="history-empty" style="display:none">
+      <div style="font-size:2.5rem;margin-bottom:12px">🍜</div>
+      <p id="t-history-empty">还没有记录，去生成第一份菜单吧</p>
+    </div>
+    <button class="btn btn-secondary" style="margin-top:8px" onclick="showScreen('checkinScreen')" id="t-history-back">← 返回</button>
+  </div>
+
+</div>
+
+<!-- 历史详情弹层 -->
+<div class="modal-overlay" id="historyDetailModal">
+  <div class="modal modal-scroll">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="detailDate"></div>
+        <div class="modal-sub"   id="detailConst"></div>
+      </div>
+      <button class="fav-btn" id="detailFavBtn" onclick="toggleFavFromDetail()">♡</button>
+    </div>
+    <div id="detailContent"></div>
+    <button class="btn btn-secondary btn-sm" style="margin-top:16px" onclick="closeDetail()">关闭</button>
+  </div>
+</div>
+
+<!-- 设置 -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <h2 id="t-settings-title">⚙ 设置</h2>
+    <div id="apiStatus" class="api-status off">加载中…</div>
+    <p style="font-size:0.85rem;color:var(--ink-mid);line-height:1.7;margin-bottom:16px">
+      API Key 在 <code>.env</code> 文件中设置：<br>
+      <code>DEEPSEEK_API_KEY=sk-xxxxxxxxxx</code><br>
+      修改后重启服务（<code>npm start</code>）即可生效。
+    </p>
+    <button class="btn btn-primary btn-sm" onclick="closeSettings()" id="t-save-settings">关闭</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

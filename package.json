@@ -1,0 +1,14 @@
+{
+  "name": "shiyi-tcm-advisor",
+  "version": "1.0.0",
+  "description": "食宜 ShiYi — TCM-Inspired Smart Meal Advisor",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^2.7.0"
+  }
+}
